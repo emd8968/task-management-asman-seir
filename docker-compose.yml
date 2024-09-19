@@ -1,0 +1,46 @@
+# Docker-Compose Version
+version: '3.9'
+name: 'user-management-api-platform'
+services:
+    user-management-api:
+        build:
+            context: ./
+            dockerfile: docker/local.Dockerfile
+        restart: unless-stopped
+        working_dir: /var/www
+        tty: true
+        volumes:
+            - ./:/var/www
+        ports:
+            - "80:80"
+        depends_on:
+            - mysql
+        networks:
+            - my-network
+    # MySQL
+    mysql:
+        image: mysql:latest
+        restart: unless-stopped
+        environment:
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+            retries: 3
+            timeout: 5s
+        tty: true
+        ports:
+            - "33061:3306"
+        volumes:
+            - mysql-data:/var/lib/database
+        networks:
+            - my-network
+volumes:
+    mysql-data:
+# Networks
+networks:
+    my-network:
+        driver: bridge
