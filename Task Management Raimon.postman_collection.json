@@ -21,7 +21,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/tasks/",
+							"raw": "{{base_url}}/api/tasks/?status=completed",
 							"host": [
 								"{{base_url}}"
 							],
@@ -29,6 +29,12 @@
 								"api",
 								"tasks",
 								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "completed"
+								}
 							]
 						}
 					},
