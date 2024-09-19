@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskBulkStoreRequest;
 use App\Http\Requests\TaskBulkUpdateRequest;
+use App\Http\Requests\TaskCountRequest;
 use App\Http\Requests\TaskIndexRequest;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Services\TaskService;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -72,6 +74,16 @@ class TaskController extends Controller
 
         return [
             'success' => $success,
+        ];
+    }
+
+    public function tasksCount(TaskCountRequest $request)
+    {
+        $user = Auth::user();
+        $count = $this->taskService->tasksCount($user->id, $request->get('status'));
+
+        return [
+            'count' => $count,
         ];
     }
 }

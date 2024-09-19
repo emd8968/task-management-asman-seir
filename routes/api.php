@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::prefix('tasks')->group(function () {
         Route::post('/bulk-insert', [TaskController::class, 'bulkStore']);
         Route::post('/bulk-update', [TaskController::class, 'bulkUpdate']);
+        Route::get('/task-count', [TaskController::class, 'tasksCount']);
     });
 
 });

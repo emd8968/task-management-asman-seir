@@ -44,7 +44,7 @@ class TaskService
 
         $data = array_filter(
             $data,
-            fn ($row) => in_array($row['id'], $ids
+            fn($row) => in_array($row['id'], $ids
             ));
 
         return $this->taskRepository->bulkUpsert($data);
@@ -62,10 +62,15 @@ class TaskService
 
     public function all($filters): Collection
     {
-        if(!empty($filters)){
+        if (!empty($filters)) {
             return $this->taskRepository->getAllByFilters($filters);
         }
         return $this->taskRepository->all();
+    }
+
+    public function tasksCount($userId, $status): int
+    {
+        return $this->taskRepository->tasksCount($userId, $status);
     }
 
 }
